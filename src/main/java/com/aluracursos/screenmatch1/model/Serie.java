@@ -1,7 +1,5 @@
 package com.aluracursos.screenmatch1.model;
 
-import com.aluracursos.screenmatch1.service.ConsultaGemini;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,7 +20,7 @@ public class Serie {
     private Categoria genero;
     private String actores;
     private String sinopsis;
-    @Transient
+    @OneToMany(mappedBy = "serie")
     private List<Episodio> episodios;
 
     public Serie() { }
