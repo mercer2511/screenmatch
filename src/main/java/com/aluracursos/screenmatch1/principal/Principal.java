@@ -33,6 +33,8 @@ public class Principal {
                     1 - Buscar series 
                     2 - Buscar episodios
                     3 - Mostrar series buscadas
+                    4 - Buscar series por título
+                    5 - Top 5 series
                                   
                     0 - Salir
                     """;
@@ -49,6 +51,12 @@ public class Principal {
                     break;
                 case 3:
                     mostrarSeriesBuscadas();
+                    break;
+                case 4:
+                    buscarSeriesPorTitulo();
+                    break;
+                case 5:
+                    buscarTop5Series();
                     break;
 
                 case 0:
@@ -115,6 +123,23 @@ public class Principal {
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
+    }
+
+    private void buscarSeriesPorTitulo() {
+        System.out.println("Escribe el nombre de la serie que deseas buscar:");
+        var nombreSerie = teclado.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainsIgnoreCase(nombreSerie);
+
+        if (serieBuscada.isPresent()) {
+            System.out.println("Serie encontrada: " + serieBuscada.get());
+        } else {
+            System.out.println("No se encontró ninguna serie con el título: " + nombreSerie);
+        }
+    }
+
+    private void buscarTop5Series() {
+        List<Serie> topSeries = repositorio.findTop5ByOrderByEvaluacionDesc();
+        topSeries.forEach(s -> System.out.println("Serie: " + s.getTitulo() + ", Evaluación: " + s.getEvaluacion()));
     }
 }
 
